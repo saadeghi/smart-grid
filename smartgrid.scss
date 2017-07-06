@@ -1,0 +1,67 @@
+/**
+ * @param $sizes
+ * @param $gaps: 0
+ * @param $defaultGrid: 1
+ */
+
+@mixin smartgrid($sizes, $gaps: 0, $defaultGrid: 1) {
+	overflow: hidden;
+	$marginSide : 0;
+	$marginDown : 0;
+	@if (length($gaps)) >= 1{
+		$marginSide : nth($gaps, 1) + px;
+	}
+	@if (length($gaps)) >= 2{
+		$marginDown : nth($gaps, 2) + px;
+	}
+	&>*{
+		font-size: 0;
+		overflow: hidden;
+		margin-right: -#{$marginSide};
+		&>*{
+			@if (length($defaultGrid)) >= 1{
+				width: calc( #{percentage($defaultGrid)} - #{$marginSide} );
+			}@else{
+				width: 100%;
+			}
+			font-size: 1rem;
+			display: inline-block;
+			box-sizing: border-box;
+			margin-right: $marginSide;
+			margin-bottom: $marginDown;
+			@for $D1 from 1 through length($sizes) {
+				$D2: nth($sizes, $D1);
+				@if((type-of($D2) == list) and (type-of(nth($D2, 2)) == list)){
+					$minResolution: nth($D2, 1);
+					$D3: nth($D2, 2);
+					@media only screen and (min-width: $minResolution){
+						@for $D4 from 1 through length($D3) {
+							$childIndex: $D4;
+							$columnWidth: nth($D3, $childIndex);
+							&:nth-child(#{$childIndex}){
+								width: calc( #{percentage($columnWidth)} - #{$marginSide} );
+							}
+						}
+					}
+				}@elseif(type-of($D2) == list){
+					@for $D3 from 1 through length($D2) {
+						$childIndex: $D3;
+						$columnWidth: nth($D2, $childIndex);
+						&:nth-child(#{$childIndex}){
+							width: calc( #{percentage($columnWidth)} - #{$marginSide} );
+						}
+					}
+				}@elseif(type-of($sizes) == list){
+					$childIndex: $D1;
+					$columnWidth: $D2;
+					&:nth-child(#{$childIndex}){
+						width: calc( #{percentage($columnWidth)} - #{$marginSide} );
+					}
+				}@else{
+					$columnWidth: $D2;
+					width: calc( #{percentage($columnWidth)} - #{$marginSide} );
+				}
+			}
+		}
+	}
+}
