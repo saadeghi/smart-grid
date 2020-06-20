@@ -1,5 +1,8 @@
 # Smart Grid Sass Mixin
-Smart and minimal Sass grid mixin that doesn't need HTML class names!
+Smart and minimal Sass grid mixin that doesn't need HTML class names!  
+
+⚠️ This mixin works with `display:inline-block` and it was a solution for old browser that doesn't support `flexbox` and `CSS grid`. Since all modern browsers support `CSS grid` now, I suggest that you don't use this mixin and use `CSS grid` instead.   
+
 
 ```html
 <div class=grid>
